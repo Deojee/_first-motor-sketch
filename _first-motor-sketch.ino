@@ -24,7 +24,7 @@ float values[arraySize]; // Array to store the floats
 
 //StepperMotor stepper1(AccelStepper(1, stepPin1, dirPin1), 1600, -360, 360);
 
-StepperMotor stepper2(AccelStepper(1, stepPin2, dirPin2), 1600, -360, 360);  // Example pin numbers, gear ratio, min and max angles
+//StepperMotor stepper2(AccelStepper(1, stepPin2, dirPin2), 1600, -360, 360);  // Example pin numbers, gear ratio, min and max angles
         // Pin 8 and 9 are connected to the stepper motor driver
         // 1.8 is the gear ratio (e.g., 1.8° per step)
         // Min angle is 0 degrees, max angle is 360 degrees
@@ -35,12 +35,16 @@ void setup() {
 
   Serial.begin(38400);
   Serial.setTimeout(200);
+
+  Serial.println("heyo");
+  
 }
 
 
 
 void loop() {
 
+  /*
   recvWithStartEndMarkers();
 
   if (newData == true){
@@ -49,11 +53,19 @@ void loop() {
     parseData();
     useParsedData();
 
+    Serial.println("heyo");
+
     newData = false;
-  }
+  }*/
 
   //stepper1.run();
-  stepper2.run();
+  //stepper2.run();
+  
+  Serial.println("heyo");
+  
+  digitalWrite(9, HIGH);
+  digitalWrite(9, LOW);
+  delayMicroseconds(3000);
 
 }
 
@@ -108,5 +120,5 @@ void parseData() {      // split the data into its parts
 void useParsedData() {
 
     //stepper1.moveToAngle(values[0]);
-    stepper2.moveToAngle(values[1]);
+    //stepper2.moveToAngle(values[1]);
 }
