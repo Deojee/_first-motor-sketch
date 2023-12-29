@@ -23,7 +23,7 @@ void StepperMotor::moveToAngle(float angle) {
 
     long steps = ((angle/360.0) * stepsPerRevolution); // 200 steps per revolution
 
-    Serial.println(stepper.currentPosition());Serial.println(steps);
+    Serial.println(stepsPerRevolution);
 
     stepper.moveTo(steps);
 }

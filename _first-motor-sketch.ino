@@ -22,7 +22,7 @@ const int dirPin2 = 8;
 const int arraySize = 6; // Define the size of the array
 float values[arraySize]; // Array to store the floats
 
-StepperMotor stepper1(AccelStepper(1, stepPin1, dirPin1), 1600, -360, 360);
+StepperMotor stepper1(AccelStepper(1, stepPin1, dirPin1), 10000, -360, 360);
 
 StepperMotor stepper2(AccelStepper(1, stepPin2, dirPin2), 1600, -360, 360);  // Example pin numbers, gear ratio, min and max angles
         // Pin 8 and 9 are connected to the stepper motor driver
