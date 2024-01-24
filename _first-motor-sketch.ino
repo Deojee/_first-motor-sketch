@@ -1,5 +1,6 @@
 #include <AccelStepper.h>
 #include "StepperMotor.h"
+#include <Servo.h>
 
 
 const byte numChars = 32;
@@ -11,30 +12,37 @@ char messageFromPC[numChars] = {0};
 boolean newData = false;
 
 
-// Pins for stepper motor control
-const int stepPin1 = 7; // Step pin for stepper motor 1
-const int dirPin1 = 6; // Direction pin for stepper motor 1
-
-const int stepPin2 = 9;
-const int dirPin2 = 8;
 
 
 const int arraySize = 6; // Define the size of the array
 float values[arraySize]; // Array to store the floats
 
-StepperMotor stepper1(AccelStepper(1, stepPin1, dirPin1), 10000, -360, 360);
+StepperMotor baseMotor(AccelStepper(1, 4, 3), 200 * (3/1) * (6/1), -3600, 3600);
 
-StepperMotor stepper2(AccelStepper(1, stepPin2, dirPin2), 1600, -360, 360);  // Example pin numbers, gear ratio, min and max angles
+//1, step pin, dir pin
+StepperMotor shoulderMotor(AccelStepper(1, 10, 9), -200 * 2 * (76.0/18.0) * (75.0/25.0), -90, 90);  // Example pin numbers, gear ratio, min and max angles
         // Pin 8 and 9 are connected to the stepper motor driver
         // 1.8 is the gear ratio (e.g., 1.8° per step)
         // Min angle is 0 degrees, max angle is 360 degrees
 
-    
+StepperMotor elbowMotor(AccelStepper(1, 12, 11), -200 * 2 * (76.0/18.0) * (90.0/30.0), -360, 360);
+
+StepperMotor elbowTwistMotor(AccelStepper(1, 8, 7), -200 * 2 * (72.0/18.0) * (72.0/18.0), -360, 360);
+
+StepperMotor wristMotor(AccelStepper(1, 6, 5), -200 * 2 * (80.0/20) * (70.0/20), -360, 360);
+
+Servo wristTwist;
 
 void setup() {
 
   Serial.begin(38400);
   Serial.setTimeout(200);
+
+  wristTwist.attach(2);
+
+
+  //stepper1.moveToAngle(360);
+  //stepper2.moveToAngle(360);
 }
 
 
@@ -52,8 +60,11 @@ void loop() {
     newData = false;
   }
 
-  stepper1.run();
-  stepper2.run();
+  baseMotor.run();
+  shoulderMotor.run();
+  elbowMotor.run();
+  elbowTwistMotor.run();
+  wristMotor.run();
 
 }
 
@@ -107,6 +118,13 @@ void parseData() {      // split the data into its parts
 
 void useParsedData() {
 
-    stepper1.moveToAngle(values[0]);
-    stepper2.moveToAngle(values[1]);
+    baseMotor.moveToAngle(values[0]);
+    shoulderMotor.moveToAngle(values[1]);
+    elbowMotor.moveToAngle(values[2] + ((1.0/3.0) * values[1]));
+
+    elbowTwistMotor.moveToAngle(values[3]);
+    wristMotor.moveToAngle(values[4]);
+
+    wristTwist.write(values[5] * (180.0/300.0));
+    
 }

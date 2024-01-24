@@ -5,8 +5,8 @@ StepperMotor::StepperMotor(AccelStepper newStepper, float stepsPerRevolution, in
     this->minAngle = minAngle;
     this->maxAngle = maxAngle;
     this->stepsPerRevolution = stepsPerRevolution;
-    stepper.setMaxSpeed(1000.0); // Set your maximum speed here
-    stepper.setAcceleration(3000.0); // Set your acceleration here
+    stepper.setMaxSpeed(800.0); // Set your maximum speed here
+    stepper.setAcceleration(1000.0); // Set your acceleration here
     stepper.setCurrentPosition(0);
 }
 
@@ -23,7 +23,7 @@ void StepperMotor::moveToAngle(float angle) {
 
     long steps = ((angle/360.0) * stepsPerRevolution); // 200 steps per revolution
 
-    Serial.println(stepsPerRevolution);
+    //Serial.println(stepsPerRevolution);
 
     stepper.moveTo(steps);
 }
