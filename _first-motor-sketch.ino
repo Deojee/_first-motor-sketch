@@ -17,19 +17,19 @@ boolean newData = false;
 const int arraySize = 6; // Define the size of the array
 float values[arraySize]; // Array to store the floats
 
-StepperMotor baseMotor(AccelStepper(1, 4, 3), 200 * (3/1) * (6/1), -3600, 3600);
+StepperMotor baseMotor(AccelStepper(1, 4, 3), 200 * (4/1) * (6/1) * 4, -3600, 3600);
 
 //1, step pin, dir pin
-StepperMotor shoulderMotor(AccelStepper(1, 10, 9), -200 * 2 * (76.0/18.0) * (75.0/25.0), -90, 90);  // Example pin numbers, gear ratio, min and max angles
+StepperMotor shoulderMotor(AccelStepper(1, 12, 11), 200 * 2 * (76.0/18.0) * (75.0/25.0), -90, 90);  // Example pin numbers, gear ratio, min and max angles
         // Pin 8 and 9 are connected to the stepper motor driver
         // 1.8 is the gear ratio (e.g., 1.8° per step)
         // Min angle is 0 degrees, max angle is 360 degrees
 
-StepperMotor elbowMotor(AccelStepper(1, 12, 11), -200 * 2 * (76.0/18.0) * (90.0/30.0), -360, 360);
+StepperMotor elbowMotor(AccelStepper(1, 10, 9), 200 * 2 * (76.0/18.0) * (90.0/30.0), -360, 360);
 
-StepperMotor elbowTwistMotor(AccelStepper(1, 8, 7), -200 * 2 * (72.0/18.0) * (72.0/18.0), -360, 360);
+StepperMotor elbowTwistMotor(AccelStepper(1, 8, 7), 200 * 4 * (72.0/18.0) * (72.0/18.0), -360, 360);
 
-StepperMotor wristMotor(AccelStepper(1, 6, 5), -200 * 2 * (80.0/20) * (70.0/20), -360, 360);
+StepperMotor wristMotor(AccelStepper(1, 6, 5), -200 * 4 * (80.0/20) * (70.0/20), -360, 360);
 
 Servo wristTwist;
 
@@ -40,9 +40,6 @@ void setup() {
 
   wristTwist.attach(2);
 
-
-  //stepper1.moveToAngle(360);
-  //stepper2.moveToAngle(360);
 }
 
 
@@ -125,6 +122,6 @@ void useParsedData() {
     elbowTwistMotor.moveToAngle(values[3]);
     wristMotor.moveToAngle(values[4]);
 
-    wristTwist.write(values[5] * (180.0/300.0));
+    wristTwist.write(values[5] * ((180.0/1800.0) * (1550.0/1440.0)));
     
 }
