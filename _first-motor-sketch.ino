@@ -26,6 +26,7 @@ StepperMotor shoulderMotor(AccelStepper(1, 5, 6), 200 * 2 * (7.85/1.0), -3600, 3
         // Example pin numbers, gear ratio, min and max angles 
         // Pin 8 and 9 are connected to the stepper motor driver (swapping these will make it not work)
         // 200 is base steps per revolution, 2 is for half step mode, and 76.0/18.0 is driven gear teeth / drive gear teeth
+        // Min angle is 0 degrees, max angle is 360 degrees (starts at 0?)
 
 StepperMotor elbowMotor(AccelStepper(1, 10, 9), 200 * 2 * (76.0/18.0) * (90.0/30.0), -360, 360);
 
