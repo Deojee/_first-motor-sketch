@@ -17,13 +17,15 @@ boolean newData = false;
 const int arraySize = 6; // Define the size of the array
 float values[arraySize]; // Array to store the floats
 
-StepperMotor baseMotor(AccelStepper(1, 4, 3), 200 * (4/1) * (6/1) * 4, -3600, 3600);
+StepperMotor baseMotor(AccelStepper(1, 3, 4), 200 * 4 * (7.85/1.0), -360, 360);
 
 //1, step pin, dir pin
-StepperMotor shoulderMotor(AccelStepper(1, 12, 11), 200 * 2 * (76.0/18.0) * (75.0/25.0), -90, 90);  // Example pin numbers, gear ratio, min and max angles
-        // Pin 8 and 9 are connected to the stepper motor driver
-        // 1.8 is the gear ratio (e.g., 1.8° per step)
-        // Min angle is 0 degrees, max angle is 360 degrees
+StepperMotor shoulderMotor(AccelStepper(1, 5, 6), 200 * 2 * (7.85/1.0), -3600, 3600);  
+        
+        // exampleMotor(AccelStepper(1, 8, 9), 200 * 2 * (76.0/18.0) * (75.0/25.0), -90, 90);  
+        // Example pin numbers, gear ratio, min and max angles 
+        // Pin 8 and 9 are connected to the stepper motor driver (swapping these will make it not work)
+        // 200 is base steps per revolution, 2 is for half step mode, and 76.0/18.0 is driven gear teeth / drive gear teeth
 
 StepperMotor elbowMotor(AccelStepper(1, 10, 9), 200 * 2 * (76.0/18.0) * (90.0/30.0), -360, 360);
 
@@ -35,10 +37,13 @@ Servo wristTwist;
 
 void setup() {
 
+  Serial.println("Booting");
+
   Serial.begin(38400);
   Serial.setTimeout(200);
 
-  wristTwist.attach(2);
+  Serial.println("Booted");
+  //wristTwist.attach(2);
 
 }
 
@@ -108,20 +113,21 @@ void parseData() {      // split the data into its parts
         strtokIndx = strtok(NULL, ",");
         values[i] = atof(strtokIndx);     // convert this part to a float
 
-        //Serial.print(i); Serial.print(": "); Serial.print(values[i]); Serial.print(" ");
+        Serial.print(i); Serial.print(": "); Serial.print(values[i]); Serial.print(" ");
 
-    }//Serial.println("~");
+    }Serial.println("~");
 }
 
 void useParsedData() {
 
     baseMotor.moveToAngle(values[0]);
     shoulderMotor.moveToAngle(values[1]);
-    elbowMotor.moveToAngle(values[2] + ((1.0/3.0) * values[1]));
 
-    elbowTwistMotor.moveToAngle(values[3]);
-    wristMotor.moveToAngle(values[4]);
+    Serial.println("Tried to use data");
 
-    wristTwist.write(values[5] * ((180.0/1800.0) * (1550.0/1440.0)));
+    //elbowMotor.moveToAngle(values[2] + ((1.0/3.0) * values[1]));
+    //elbowTwistMotor.moveToAngle(values[3]);
+    //wristMotor.moveToAngle(values[4]);
+    //wristTwist.write(values[5] * ((180.0/1800.0) * (1550.0/1440.0)));
     
 }
